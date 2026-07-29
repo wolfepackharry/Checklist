@@ -18,16 +18,13 @@ _newTaskBtn.addEventListener("click", () => {
     if (!TaskPages[_currentPageIndex]) {
         TaskPages[_currentPageIndex] = [];
       }
-    TaskPages[_currentPageIndex].push({ text: _taskInput.value, checkbox: checkbox.checked});
+    const task = {text : _taskInput.value, checked : checkbox.checked};
+    TaskPages[_currentPageIndex].push(task);
     console.log(TaskPages)
     _taskInput.value = "";
     checkbox.addEventListener('click', () => {
-        TaskPages.forEach(element => {
-            if (element.checkbox == checkbox){
-                element.checkbox.checked = checkbox.checked;
-                console.log(TaskPages);
-            }
-        });
+        task.checked = checkbox.checked;
+        li.classList.toggle('completed', checkbox.checked);
     })
     btn.addEventListener('click', () => {
         li.remove();
