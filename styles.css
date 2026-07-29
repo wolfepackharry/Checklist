@@ -31,11 +31,18 @@ nav {
   margin-top: 6rem;
 }
 #basePage{
-  width: 2.6rem;
+  width: 2.8rem;
+}
+#pageNameInput{
+  width: 4.1rem;
 }
 #TaskInput{
   margin-left: 6rem;
 }
+.selected {
+    background-color: #555;
+    color: white;
+  }
 nav a {
   display: inline-block;
   min-width: 9rem;
