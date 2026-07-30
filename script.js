@@ -111,7 +111,8 @@ function createPageButton(name, index) {
     saveTasks();
     btn.addEventListener('click', () => {
       if (!_deleting){
-        selectPage(index, myButton);
+        console.log(_deleting);
+        selectPage(index, btn);
       }
       else{
         if (TaskPages.length > 1)
