@@ -12,16 +12,22 @@
     <script type="module" src="script.js"></script>
   </head>
   <body>
-    <nav>
-      <nav, id = "pagesSetup">
-        <input id = "pageNameInput", value="new page"/>
-        <button id = "NewPageBtn">New Page</button> 
-        <button id = "DeletingBtn">Delete</button></nav>
-    </nav>
+    <div id = "pageControls">
+    <input id = "pageNameInput" value="new page"/>
+    <button id = "NewPageBtn">New Page</button> 
+    <button id = "DeletingBtn">Delete</button>
+    <button id = "Reset">Reset</button></div>
+      <nav id = "pagesSetup">
+
+      </nav>
     <main>
-      <input id = "TaskInput", value="my new task"/>
+      
+      <div id="taskInputRow"> 
+      <input id = "TaskInput" value="my new task"/>
       <button id = "NewTaskBtn">New Task</button>
       <ul id="taskList"></ul>
+      </div>
+      
     </main>
   </body>
 </html>

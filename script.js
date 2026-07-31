@@ -3,7 +3,9 @@ const _taskInput = document.getElementById("TaskInput");
 const _newPageBtn = document.getElementById("NewPageBtn");
 const _newPageInput = document.getElementById("pageNameInput");
 const _deletingBtn = document.getElementById("DeletingBtn");
+const _reset = document.getElementById("Reset")
 let TaskPages = [{Name: "", Contents: []}];
+let buttons = []
 let _currentPageIndex = 0;
 let _deleting = false;
 if (loadTasks()){
@@ -11,7 +13,7 @@ if (loadTasks()){
   TaskPages.forEach((page, index) => {
     const btn = createPageButton(page.Name, index);
   if (index === 0) {
-    selectPage(0, btn);
+    selectPage(0);
     console.log("GGGGG");
   }
   });
@@ -24,7 +26,9 @@ else{
 _newTaskBtn.addEventListener("click", () => {
     if (_taskInput.value == ""){return;}
     const li = document.createElement('li');
-    li.textContent = _taskInput.value;
+    const span = document.createElement('span');
+    span.textContent = _taskInput.value;
+    li.appendChild(span);
     document.getElementById('taskList').appendChild(li);
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -65,22 +69,30 @@ _newPageBtn.addEventListener("click", () => {
     const newPageBtn = document.createElement('button');
     newPageBtn.textContent = _newPageInput.value;
     document.getElementById('pagesSetup').prepend(newPageBtn);
-    const index = TaskPages.length;
+    let index = TaskPages.length;
     _currentPageIndex = index;
+    buttons.splice(index, 0, newPageBtn);
     console.log(index);
     TaskPages[_currentPageIndex] = {Name: _newPageInput.value, Contents: []};
-    selectPage(index, newPageBtn);
+    selectPage(index);
     saveTasks();
     let myButton = newPageBtn;
     newPageBtn.addEventListener('click', () => {
+      index = buttons.indexOf(newPageBtn);
       if (!_deleting){
-        selectPage(index, myButton);
+        selectPage(index);
       }
       else{
         if (TaskPages.length > 1)
         {
           newPageBtn.remove();
+          buttons.splice(index, 1)
           TaskPages.splice(index, 1);
+          if (index == _currentPageIndex){
+            let nextIndex = index;
+            if (!buttons[nextIndex]){nextIndex -= 1;}
+            selectPage(nextIndex);
+          }
           saveTasks();
         }
       }
@@ -96,7 +108,8 @@ _newPageBtn.addEventListener("click", () => {
     });
 })
 
-function selectPage(index, btn) {
+function selectPage(index) {
+    let btn = buttons[index];
     document.querySelectorAll('#pagesSetup button').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     _currentPageIndex = index;
@@ -107,18 +120,26 @@ function createPageButton(name, index) {
     const btn = document.createElement('button');
     btn.textContent = name;
     document.getElementById('pagesSetup').prepend(btn);
-    selectPage(index, btn);
+    buttons.splice(index, 0, btn);
+    selectPage(index);
     saveTasks();
     btn.addEventListener('click', () => {
+      index = buttons.indexOf(btn);
       if (!_deleting){
         console.log(_deleting);
-        selectPage(index, btn);
+        selectPage(index);
       }
       else{
         if (TaskPages.length > 1)
         {
           btn.remove();
+          buttons.splice(index, 1);
           TaskPages.splice(index, 1);
+          if (index == _currentPageIndex){
+            let nextIndex = index;
+            if (!buttons[nextIndex]){nextIndex -= 1;}
+            selectPage(nextIndex);
+          }
           saveTasks();
         }
       }
@@ -149,7 +170,9 @@ function renderTasks() {
     document.getElementById('taskList').innerHTML = "";
     TaskPages[_currentPageIndex].Contents.forEach(task => {
       const li = document.createElement('li');
-      li.textContent = task.text;
+      const span = document.createElement('span');
+      span.textContent = task.text;
+      li.appendChild(span);
   
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
@@ -180,3 +203,14 @@ function renderTasks() {
   function saveTasks() {
     localStorage.setItem('TaskPages', JSON.stringify(TaskPages));
   }
+
+
+_reset.addEventListener("click", () =>{
+  TaskPages.forEach(task => {
+    task.Contents.forEach(checked => {
+      checked.checked = false;
+    })
+  })
+  renderTasks();
+  saveTasks();
+});
