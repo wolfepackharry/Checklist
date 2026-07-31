@@ -72,7 +72,7 @@ button{
 }
 .task-item {
   display: flex;
-  color: aqua;
+  color: black;
   align-items: center;
   gap: 8px;
 }
